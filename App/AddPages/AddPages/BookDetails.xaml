@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AddPages.BookDetails"
+             Title="BookDetails">
+    <VerticalStackLayout>
+        <Button Text="Back" Clicked="GoToHome" HorizontalOptions="Start" VerticalOptions="Start"/>
+        <Label Text="Read4All" FontSize="64" HorizontalOptions="Center"></Label>
+        <Image Source="xioajie.jpeg" />
+        <Button Text="Ajouter un tag"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            Margin="0,20,15,0"/>
+        <Button Text="Lire"
+    VerticalOptions="Center"
+    HorizontalOptions="Center"
+    Margin="0,20,15,0" BackgroundColor="Gray" Clicked="GoToRead"/>
+    </VerticalStackLayout>
+    
+</ContentPage>
