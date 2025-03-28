@@ -7,7 +7,6 @@
     Shell.FlyoutBehavior="Disabled"
     Title="AddPages">
 
-   
     <TabBar>
         <Tab Title="Liste Livre" Icon="home.png">
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
