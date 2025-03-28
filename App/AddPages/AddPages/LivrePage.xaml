@@ -9,12 +9,12 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" FontSize="64"/>
         <Button Text="Back"
-        VerticalOptions="Center"
-        HorizontalOptions="Start"
-        BackgroundColor="Gray"/>
+            VerticalOptions="Center"
+            HorizontalOptions="Start"
+            BackgroundColor="Gray"/>
         <Button Text="Go"
-        VerticalOptions="Center"
-        HorizontalOptions="Start"
-        BackgroundColor="Gray"/>
+            VerticalOptions="Center"
+            HorizontalOptions="Start"
+            BackgroundColor="Gray"/>
     </VerticalStackLayout>
 </ContentPage>
