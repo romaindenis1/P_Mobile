@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Read4All.LivrePage"
              Title="LivrePage">
-<<<<<<< Updated upstream
+
     <VerticalStackLayout>
         <Label 
             Text="The quran"
@@ -17,7 +17,7 @@
             VerticalOptions="Center"
             HorizontalOptions="Start"
             BackgroundColor="Gray"/>
-=======
+
     <VerticalStackLayout Padding="20">
 
         <!-- Header -->
@@ -56,6 +56,5 @@ Vivamus et mi rhoncus ipsum ultrices ullamcorper. Donec venenatis leo mi, quis c
                     BackgroundColor="LightGray"/>
         </HorizontalStackLayout>
 
->>>>>>> Stashed changes
     </VerticalStackLayout>
 </ContentPage>
