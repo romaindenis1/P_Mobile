@@ -1,9 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddPages", "AddPages\AddPages.csproj", "{9C255AB1-7280-4A68-A94D-B86229659381}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Read4All", "Read4All\Read4All.csproj", "{9C255AB1-7280-4A68-A94D-B86229659381}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
