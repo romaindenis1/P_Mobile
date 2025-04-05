@@ -8,11 +8,7 @@
     Title="Read4All">
 
     <TabBar>
-<<<<<<< Updated upstream
         <Tab Title="Liste Livre" Icon="home.png">
-=======
-        <Tab Title="Liste Livre" Icon="xioajie.jpeg">
->>>>>>> Stashed changes
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
         </Tab>
         <Tab Title="Details Livre" Icon="profile.png">
