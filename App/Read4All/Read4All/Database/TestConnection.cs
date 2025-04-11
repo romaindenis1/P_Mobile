@@ -16,15 +16,17 @@ namespace Read4All.Database
         {
             try
             {
-                using (var connection = new MySqlConnection("Server=10.0.2.2;Port=6033;Database=db_livre;User=root;Password=root;"))
+                const string connectionParams = "Server=10.0.2.2;Port=6033;Database=db_livre;User=root;Password=root;";
+
+                using (var connection = new MySqlConnection(connectionParams))
                 {
                     await connection.OpenAsync();
-                    Debug.WriteLine("Works " + connection.ConnectionString);
+                    Debug.WriteLine("The connection is now open " + connection.ConnectionString);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Doesnt work lol" + ex);
+                Debug.WriteLine("The connection failed" + ex);
             }
         }
     }
