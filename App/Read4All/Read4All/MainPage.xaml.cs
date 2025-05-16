@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Text.Json;
 using Read4All.Models;
 using System.Collections.ObjectModel;
-using Read4All.Pages;
 using System.Windows.Input;
 
 namespace Read4All
@@ -31,13 +30,9 @@ namespace Read4All
             };
 
             BooksCollection.ItemsSource = filteredBooks;
-
             RefreshView.Command = new Command(async () => await LoadBooksAsync());
-
             OpenBookDetailsCommand = new Command<Book>(async (book) => await OpenBookDetails(book));
-
             BindingContext = this;
-
             LoadBooksAsync();
         }
 
@@ -54,7 +49,6 @@ namespace Read4All
             if (e.CurrentSelection.FirstOrDefault() is Book selectedBook)
             {
                 ((CollectionView)sender).SelectedItem = null;
-
                 await OpenBookDetails(selectedBook);
             }
         }
@@ -62,9 +56,7 @@ namespace Read4All
         private void OnTagChanged()
         {
             UpdateAvailableTags();
-            
             ApplyFilters();
-
             BooksCollection.ItemsSource = null;
             BooksCollection.ItemsSource = filteredBooks;
         }
@@ -109,7 +101,6 @@ namespace Read4All
             var filtered = books.Where(b => 
                 selectedTag == null || 
                 b.Categorie?.Libelle == selectedTag);
-
 
             var sorted = filtered.OrderByDescending(b => b.AnneeEdition);
 
