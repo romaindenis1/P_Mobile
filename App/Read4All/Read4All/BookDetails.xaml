@@ -2,22 +2,66 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Read4All.BookDetails"
-             Title="BookDetails">
-    <VerticalStackLayout>
-        <Button 
-            Text="Back" Clicked="GoToHome" HorizontalOptions="Start" VerticalOptions="Start"/>
-        <Label 
-            Text="Read4All" FontSize="64" HorizontalOptions="Center"></Label>
-        <Image 
-            Source="xioajie.jpeg" />
-        <Button Text="Ajouter un tag"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"
-            Margin="0,20,15,0"/>
-        <Button Text="Lire"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"
-            Margin="0,20,15,0" BackgroundColor="Gray" Clicked="GoToRead"/>
-    </VerticalStackLayout>
+             Title="{Binding Book.Title}">
     
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*" Padding="20">
+            <Button Grid.Row="0"
+                    Text="Back" 
+                    Clicked="GoToHome" 
+                    HorizontalOptions="Start" 
+                    Margin="0,0,0,20"/>
+
+            <VerticalStackLayout Grid.Row="1" Spacing="15">
+                <Label Text="{Binding Book.Title}"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                    <Label Grid.Column="0" Grid.Row="0"
+                           Text="{Binding Book.Auteur.Nom}"
+                           FontSize="18"
+                           TextColor="#495057"/>
+                    
+                    <Label Grid.Column="1" Grid.Row="0"
+                           Text="{Binding Book.AnneeEdition, StringFormat='Published in {0}'}"
+                           FontSize="16"
+                           TextColor="#6c757d"/>
+
+                    <Label Grid.Column="0" Grid.Row="1"
+                           Text="{Binding Book.Categorie.Libelle}"
+                           FontSize="16"
+                           TextColor="#495057"/>
+                           
+                    <Label Grid.Column="1" Grid.Row="1"
+                           Text="{Binding Book.NbPage, StringFormat='{0} pages'}"
+                           FontSize="16"
+                           TextColor="#6c757d"/>
+                </Grid>
+
+                <Button Text="Change Tag"
+                        Clicked="OnChangeTagClicked"
+                        HorizontalOptions="Start"
+                        Margin="0,10"/>
+
+                <BoxView HeightRequest="1" 
+                         Color="#dee2e6" 
+                         Margin="0,10"/>
+
+                <Label Text="Summary"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0,10,0,0"/>
+
+                <Label Text="{Binding Book.Resume}"
+                       FontSize="16"
+                       TextColor="#212529"/>
+
+                <Button Text="Read"
+                        Clicked="GoToRead"
+                        HorizontalOptions="Center"
+                        Margin="0,20"/>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
 </ContentPage>
