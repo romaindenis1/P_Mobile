@@ -1,0 +1,19 @@
+[X] Maquettes
+[] Backend
+   [] Stocker Epub
+   [] Gestion des tags
+[] Liseuse
+   [] Affichage des epubs
+   [] Mémoriser la dernière page
+   [] Reprise automatique à la page mémorisée
+   [] Navigation entre les pages
+[] Gestion des livres
+   [] Lister les livres en triant par date d'ajout
+      [] Affichage de la couverture en miniature
+   [] Créer des tags
+      [] Association au livre
+      [] Filtrage par tags
+[] Importer les epubs via un script SQL
+[] Tests
+   [] Tests manuels
+   [] Tests unitaires
