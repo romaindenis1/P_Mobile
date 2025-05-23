@@ -1,62 +1,77 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!--Page de details d'un livre-->
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Read4All.BookDetails"
              Title="{Binding Book.Title}">
     
+    <!--Vue scrollable pour le contenu-->
     <ScrollView>
         <Grid RowDefinitions="Auto,*" Padding="20">
+            <!--Bouton retour-->
             <Button Grid.Row="0"
                     Text="Back" 
                     Clicked="GoToHome" 
                     HorizontalOptions="Start" 
                     Margin="0,0,0,20"/>
 
+            <!--Contenu principal du livre-->
             <VerticalStackLayout Grid.Row="1" Spacing="15">
+                <!--Titre du livre-->
                 <Label Text="{Binding Book.Title}"
                        FontSize="24"
                        FontAttributes="Bold"/>
 
+                <!--Informations principales du livre-->
                 <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                    <!--Nom de l'auteur-->
                     <Label Grid.Column="0" Grid.Row="0"
                            Text="{Binding Book.Auteur.Nom}"
                            FontSize="18"
                            TextColor="#495057"/>
                     
+                    <!--Annee d'edition-->
                     <Label Grid.Column="1" Grid.Row="0"
                            Text="{Binding Book.AnneeEdition, StringFormat='Published in {0}'}"
                            FontSize="16"
                            TextColor="#6c757d"/>
 
+                    <!--Categorie du livre-->
                     <Label Grid.Column="0" Grid.Row="1"
                            Text="{Binding Book.Categorie.Libelle}"
                            FontSize="16"
                            TextColor="#495057"/>
                            
+                    <!--Nombre de pages-->
                     <Label Grid.Column="1" Grid.Row="1"
                            Text="{Binding Book.NbPage, StringFormat='{0} pages'}"
                            FontSize="16"
                            TextColor="#6c757d"/>
                 </Grid>
 
+                <!--Bouton pour changer la categorie-->
                 <Button Text="Change Tag"
                         Clicked="OnChangeTagClicked"
                         HorizontalOptions="Start"
                         Margin="0,10"/>
 
+                <!--Separateur-->
                 <BoxView HeightRequest="1" 
                          Color="#dee2e6" 
                          Margin="0,10"/>
 
+                <!--Titre de la section resume-->
                 <Label Text="Summary"
                        FontSize="18"
                        FontAttributes="Bold"
                        Margin="0,10,0,0"/>
 
+                <!--Resume du livre-->
                 <Label Text="{Binding Book.Resume}"
                        FontSize="16"
                        TextColor="#212529"/>
 
+                <!--Bouton pour lire le livre-->
                 <Button Text="Read"
                         Clicked="GoToRead"
                         HorizontalOptions="Center"

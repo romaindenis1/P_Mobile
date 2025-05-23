@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!--Page principale qui affiche la liste des livres avec filtrage par categorie-->
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Read4All.MainPage"
              Title="Books">
 
+    <!--Vue avec pull-to-refresh pour recharger la liste-->
     <RefreshView x:Name="RefreshView"
                  IsRefreshing="{Binding IsBusy}">
         <Grid RowDefinitions="Auto,*">
+            <!--Section de filtrage par categorie-->
             <VerticalStackLayout Grid.Row="0" Padding="10">
                 <Label Text="Filter by Category:"
                        FontSize="16"
@@ -14,12 +17,14 @@
                        Margin="0,0,0,5"/>
                 
                 <Grid ColumnDefinitions="*,Auto">
+                    <!--Picker pour selectionner une categorie-->
                     <Picker x:Name="TagFilter"
                             Title="Select Category"
                             ItemsSource="{Binding AvailableTags}"
                             SelectedItem="{Binding SelectedTag}"
                             Margin="0,0,10,0"/>
                     
+                    <!--Bouton pour effacer le filtre-->
                     <Button Text="Clear"
                             Command="{Binding ClearFilterCommand}"
                             Grid.Column="1"
@@ -27,19 +32,23 @@
                 </Grid>
             </VerticalStackLayout>
 
+            <!--Liste des livres filtres-->
             <CollectionView x:Name="BooksCollection"
                           Grid.Row="1"
                           SelectionMode="Single"
+                          SelectionChanged="OnBookSelected"
                           ItemsSource="{Binding FilteredBooks}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
+                        <!--Template pour chaque livre dans la liste-->
                         <Frame Margin="10"
                                Padding="10"
                                BorderColor="Gray"
                                CornerRadius="10">
                             <Grid RowDefinitions="Auto,Auto,Auto"
                                   ColumnDefinitions="Auto,*">
-                                <Image Source="{Binding CoverImagePath}"
+                                <!--Image de couverture du livre-->
+                                <Image Source="{Binding ImageCouverturePath}"
                                        HeightRequest="100"
                                        WidthRequest="70"
                                        Aspect="AspectFit"
@@ -47,17 +56,20 @@
                                        Grid.Column="0"
                                        Margin="0,0,10,0"/>
                                 
+                                <!--Titre du livre-->
                                 <Label Text="{Binding Title}"
                                        FontSize="18"
                                        FontAttributes="Bold"
                                        Grid.Row="0"
                                        Grid.Column="1"/>
                                 
+                                <!--Nom de l'auteur-->
                                 <Label Text="{Binding Auteur.Nom}"
                                        FontSize="16"
                                        Grid.Row="1"
                                        Grid.Column="1"/>
                                 
+                                <!--Categorie du livre-->
                                 <Label Text="{Binding Categorie.Libelle}"
                                        FontSize="14"
                                        TextColor="Gray"

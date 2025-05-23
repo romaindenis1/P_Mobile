@@ -8,6 +8,7 @@ using System.IO;
 
 namespace Read4All.ViewModels
 {
+    //ViewModel principal qui gere la liste des livres et les filtres
     public class MainViewModel : BindableObject
     {
         private readonly HttpClient httpClient;
@@ -20,6 +21,7 @@ namespace Read4All.ViewModels
         private const int RetryDelayMs = 1000;
         private const string BaseUrl = "http://10.0.2.2:3000";
 
+        //les collections qu'on expose en lecture seule pour la vue
         public ObservableCollection<Book> Books => books;
         public ObservableCollection<Book> FilteredBooks => filteredBooks;
         public IList<string> AvailableTags => availableTags.OrderBy(t => t).ToList();
@@ -27,6 +29,7 @@ namespace Read4All.ViewModels
         public ICommand OpenBookDetailsCommand { get; }
         public ICommand ClearFilterCommand { get; }
 
+        //indique si une operation est en cours (pour afficher un loader)
         public bool IsBusy
         {
             get => isBusy;
@@ -37,6 +40,7 @@ namespace Read4All.ViewModels
             }
         }
 
+        //le tag selectionne pour filtrer les livres
         public string SelectedTag
         {
             get => selectedTag;
@@ -54,16 +58,18 @@ namespace Read4All.ViewModels
             filteredBooks = new ObservableCollection<Book>();
             availableTags = new HashSet<string>();
 
+            //on desactive la verification du certificat ssl pour le dev
             var handler = new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
             };
-
+            
             httpClient = new HttpClient(handler)
             {
                 Timeout = TimeSpan.FromSeconds(60)
             };
 
+            //initialisation des commandes
             RefreshCommand = new Command(async () => await LoadBooksAsync());
             OpenBookDetailsCommand = new Command<Book>(async (book) => await OpenBookDetails(book));
             ClearFilterCommand = new Command(() => SelectedTag = null);
@@ -71,6 +77,7 @@ namespace Read4All.ViewModels
             LoadBooksAsync();
         }
 
+        //ouvre la page de details d'un livre
         private async Task OpenBookDetails(Book book)
         {
             if (book != null)
@@ -79,6 +86,7 @@ namespace Read4All.ViewModels
             }
         }
 
+        //met a jour la liste des tags disponibles
         public void UpdateAvailableTags()
         {
             availableTags.Clear();
@@ -92,6 +100,7 @@ namespace Read4All.ViewModels
             OnPropertyChanged(nameof(AvailableTags));
         }
 
+        //filtre les livres selon le tag selectionne
         private void ApplyFilters()
         {
             var filtered = books.Where(b =>
@@ -107,6 +116,7 @@ namespace Read4All.ViewModels
             }
         }
 
+        //charge la liste des livres depuis l'api avec gestion des erreurs et retry
         public async Task LoadBooksAsync()
         {
             if (IsBusy)
@@ -129,6 +139,7 @@ namespace Read4All.ViewModels
                     {
                         try
                         {
+                            //on lit le stream dans un bloc using pour etre sur qu'il est bien ferme
                             string content;
                             using (var stream = await response.Content.ReadAsStreamAsync())
                             {
@@ -142,6 +153,7 @@ namespace Read4All.ViewModels
                                 throw new HttpRequestException("Empty response received");
                             }
 
+                            //on desactive la case sensitivity pour le json
                             var options = new JsonSerializerOptions
                             {
                                 PropertyNameCaseInsensitive = true
@@ -157,19 +169,20 @@ namespace Read4All.ViewModels
                             books.Clear();
                             foreach (var book in booksResponse.Data)
                             {
-                                // Convert relative image path to full URL
-                                if (!string.IsNullOrEmpty(book.CoverImagePath))
+                                //on ajoute l'url de base pour les images
+                                if (!string.IsNullOrEmpty(book.ImageCouverturePath))
                                 {
-                                    book.CoverImagePath = $"{BaseUrl}{book.CoverImagePath}";
+                                    book.ImageCouverturePath = $"{BaseUrl}{book.ImageCouverturePath}";
                                 }
                                 books.Add(book);
                             }
                             UpdateAvailableTags();
                             ApplyFilters();
-                            return; // Success, exit the retry loop
+                            return;
                         }
                         catch (Exception ex) when (ex is not HttpRequestException && ex is not JsonException)
                         {
+                            //on convertit les erreurs non-http en HttpRequestException pour le retry
                             Debug.WriteLine($"asd Content reading error: {ex.Message}");
                             throw new HttpRequestException("Error reading response content", ex);
                         }
@@ -178,7 +191,7 @@ namespace Read4All.ViewModels
                     {
                         Debug.WriteLine($"asd Server Error: Status code {response.StatusCode}");
                         await Shell.Current.DisplayAlert("Connection Error", $"Unable to connect to the server. Status code: {response.StatusCode}", "OK");
-                        return; // Server error, don't retry
+                        return;
                     }
                 }
                 catch (HttpRequestException ex)
@@ -190,8 +203,9 @@ namespace Read4All.ViewModels
                     retryCount++;
                     if (retryCount < MaxRetries)
                     {
+                        //on attend de plus en plus longtemps entre chaque retry
                         Debug.WriteLine($"asd Retrying... Attempt {retryCount + 1} of {MaxRetries}");
-                        await Task.Delay(RetryDelayMs * retryCount); // Exponential backoff
+                        await Task.Delay(RetryDelayMs * retryCount);
                         continue;
                     }
                     
@@ -213,7 +227,7 @@ namespace Read4All.ViewModels
                 {
                     Debug.WriteLine($"asd Data Error: {ex.Message}");
                     await Shell.Current.DisplayAlert("Data Error", "Unable to process the server response. Please try again later.", "OK");
-                    return; // Don't retry on data errors
+                    return;
                 }
                 catch (Exception ex)
                 {
@@ -221,7 +235,7 @@ namespace Read4All.ViewModels
                     Debug.WriteLine($"asd Inner Exception: {ex.InnerException?.Message}");
                     Debug.WriteLine($"asd Stack Trace: {ex.StackTrace}");
                     await Shell.Current.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
-                    return; // Don't retry on unexpected errors
+                    return;
                 }
                 finally
                 {

@@ -10,16 +10,16 @@ namespace Read4All
 {
     public partial class MainPage : ContentPage
     {
-        private readonly MainViewModel viewModel;
+        private readonly MainViewModel _viewModel;
 
         public MainPage()
         {
             InitializeComponent();
-            viewModel = new MainViewModel();
-            BindingContext = viewModel;
+            _viewModel = new MainViewModel();
+            BindingContext = _viewModel;
 
-            BooksCollection.ItemsSource = viewModel.FilteredBooks;
-            RefreshView.Command = viewModel.RefreshCommand;
+            BooksCollection.ItemsSource = _viewModel.FilteredBooks;
+            RefreshView.Command = _viewModel.RefreshCommand;
             BooksCollection.SelectionChanged += OnBookSelected;
         }
 
@@ -27,15 +27,15 @@ namespace Read4All
         {
             if (e.CurrentSelection.FirstOrDefault() is Book selectedBook)
             {
-                ((CollectionView)sender).SelectedItem = null;
-                viewModel.OpenBookDetailsCommand.Execute(selectedBook);
+                await Shell.Current.GoToAsync($"bookdetails?bookId={selectedBook.Id}");
+                BooksCollection.SelectedItem = null;
             }
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await viewModel.LoadBooksAsync();
+            await _viewModel.LoadBooksAsync();
         }
     }
 }

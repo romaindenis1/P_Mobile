@@ -2,43 +2,35 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Read4All.LivrePage"
-             Title="NewPage1">
-    <VerticalStackLayout Padding="20">
+             Title="{Binding BookTitle}">
+    
+    <Grid RowDefinitions="Auto,*">
+        <!--Navigation Bar-->
+        <Grid Grid.Row="0" 
+              ColumnDefinitions="Auto,*,Auto"
+              Padding="10"
+              BackgroundColor="{StaticResource Primary}">
+            
+            <Button Grid.Column="0"
+                    Text="Back"
+                    Clicked="OnBackClicked"
+                    TextColor="White"/>
+            
+            <Label Grid.Column="1"
+                   Text="{Binding BookTitle}"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
+            
+            <Button Grid.Column="2"
+                    Text="Settings"
+                    Clicked="OnSettingsClicked"
+                    TextColor="White"/>
+        </Grid>
 
-
-        <HorizontalStackLayout VerticalOptions="Start">
-            <Button Text="←"
-                     FontSize="24"
-                     WidthRequest="40"
-                     HeightRequest="40"
-                     BackgroundColor="Transparent"/>
-
-            <Label Text="Le quran"
-                    FontSize="24"
-                    FontAttributes="Bold"
-                    VerticalOptions="Center"/>
-        </HorizontalStackLayout>
-
-        <ScrollView Margin="0,10,0,10">
-            <Label Text="
- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie sodales nisi, non dapibus nunc pellentesque vitae. Phasellus sagittis pretium massa, a tempor augue dignissim in. Phasellus pharetra massa vel nulla finibus, id malesuada massa varius. Morbi eros mi, convallis id arcu facilisis, congue luctus eros. Morbi consectetur non libero eget malesuada. Nunc tempus nisl sed molestie posuere. Vestibulum cursus metus vitae augue tristique ultrices.
- Vivamus et mi rhoncus ipsum ultrices ullamcorper. Donec venenatis leo mi, quis congue enim aliquam sed. Aliquam rhoncus lobortis nunc, vitae accumsan massa pretium bibendum. Aliquam in mattis sapien, ac interdum diam. Nullam elementum libero vestibulum tortor condimentum ultricies. Duis nec quam leo. Duis vulputate bibendum justo non luctus. Nulla mattis ex in aliquet efficitur. Suspendisse a aliquet massa. Proin id sem turpis. Proin efficitur convallis finibus. Ut tincidunt placerat commodo. Sed auctor est ut mattis maximus. Proin feugiat consectetur ipsum, ut mollis mauris ultricies ut."
-                    FontSize="15"
-                    LineBreakMode="WordWrap"/>
-        </ScrollView>
-
-        <HorizontalStackLayout HorizontalOptions="Center" Spacing="50">
-            <Button Text="←"
-                     FontSize="24"
-                     WidthRequest="50"
-                     HeightRequest="50"
-                     BackgroundColor="LightGray"/>
-
-            <Button Text="→"
-                     FontSize="24"
-                     WidthRequest="50"
-                     HeightRequest="50"
-                     BackgroundColor="LightGray"/>
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+        <!--EPUB Content-->
+        <WebView Grid.Row="1"
+                 x:Name="EpubViewer"
+                 Source="{Binding EpubSource}"/>
+    </Grid>
 </ContentPage>

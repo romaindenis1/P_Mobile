@@ -1,17 +1,31 @@
 using Read4All.Models;
 using System.Text;
 using System.Text.Json;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Read4All;
 
+//cet attribut permet de recuperer le bookId depuis l'url
 [QueryProperty(nameof(BookId), "bookId")]
-public partial class BookDetails : ContentPage
+public partial class BookDetails : ContentPage, INotifyPropertyChanged
 {
 	private readonly HttpClient httpClient;
-	public Book Book { get; private set; }
+	private Book book;
 	private readonly Action _onTagChanged;
 	private string bookId;
 
+	public Book Book
+	{
+		get => book;
+		private set
+		{
+			book = value;
+			OnPropertyChanged();
+		}
+	}
+
+	//cette propriete est appelee automatiquement quand on navigue vers cette page
 	public string BookId
 	{
 		get => bookId;
@@ -28,6 +42,7 @@ public partial class BookDetails : ContentPage
 	public BookDetails()
 	{
 		InitializeComponent();
+		//on desactive la verification du certificat ssl pour le dev
 		var handler = new HttpClientHandler
 		{
 			ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
@@ -37,6 +52,8 @@ public partial class BookDetails : ContentPage
 		{
 			Timeout = TimeSpan.FromSeconds(30)
 		};
+
+		BindingContext = this;
 	}
 
 	private async Task LoadBookDetails(int bookId)
@@ -49,8 +66,11 @@ public partial class BookDetails : ContentPage
 			if (response.IsSuccessStatusCode)
 			{
 				var content = await response.Content.ReadAsStringAsync();
-				Book = JsonSerializer.Deserialize<Book>(content);
-				BindingContext = this;
+				var options = new JsonSerializerOptions
+				{
+					PropertyNameCaseInsensitive = true
+				};
+				Book = JsonSerializer.Deserialize<Book>(content, options);
 			}
 			else
 			{
@@ -72,7 +92,10 @@ public partial class BookDetails : ContentPage
 
 	private async void GoToRead(object sender, EventArgs e)
 	{
-		await Navigation.PushAsync(new LivrePage());
+		if (Book != null)
+		{
+			await Navigation.PushAsync(new LivrePage { BookId = Book.Id.ToString() });
+		}
 	}
 
 	private async void OnChangeTagClicked(object sender, EventArgs e)
@@ -86,19 +109,19 @@ public partial class BookDetails : ContentPage
 
 		if (!string.IsNullOrWhiteSpace(result))
 		{
-			// Ensure we have a Categorie object
+			//on cree une categorie si elle n'existe pas
 			if (Book.Categorie == null)
 			{
 				Book.Categorie = new Categorie { Id = 0 };
 			}
 
-			// Update the category
+			//on met a jour la categorie
 			Book.Categorie.Libelle = result.Trim();
 			
-			// Notify the main page that tags have changed
+			//on notifie la page principale que les tags ont change
 			_onTagChanged?.Invoke();
 			
-			// Force UI update
+			//on force la mise a jour de l'ui
 			OnPropertyChanged(nameof(Book));
 		}
 	}
@@ -107,6 +130,7 @@ public partial class BookDetails : ContentPage
 	{
 		try
 		{
+			//on prepare les donnees pour l'api
 			var updateData = new
 			{
 				categorie = new { libelle = newTag }
@@ -135,5 +159,12 @@ public partial class BookDetails : ContentPage
 				DisplayAlert("Error", "Could not connect to the server. Please check your connection and try again.", "OK"));
 			return false;
 		}
+	}
+
+	public new event PropertyChangedEventHandler PropertyChanged;
+
+	protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+	{
+		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}
 }
