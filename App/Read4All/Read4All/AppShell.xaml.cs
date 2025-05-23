@@ -5,6 +5,7 @@ namespace Read4All
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute("bookdetails", typeof(BookDetails));
         }
     }
 }
