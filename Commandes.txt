@@ -1,0 +1,3 @@
+docker cp insert_epubs.sql db:/insert_epubs.sql
+
+docker exec -i db mysql -u root -proot db_livre < insert_epubs.sql
