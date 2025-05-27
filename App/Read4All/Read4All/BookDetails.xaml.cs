@@ -137,7 +137,7 @@ public partial class BookDetails : ContentPage
 
 						// preparation pour stocker tout le contenu du livre
 						var textBuilder = new StringBuilder();
-						const int maxContentLength = 500000; // limite de 500KB pour le texte final
+						const int maxContentLength = 500000; // limite de 500KB pour le texte final, sinon gros problemes. Donc oui, le livre entier n'est pas toujours present
 						bool contentTruncated = false;
 
 						// recuperation de tous les fichiers HTML du livre
