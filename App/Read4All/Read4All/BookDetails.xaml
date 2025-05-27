@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Read4All.BookDetails"
+             Title="{Binding Book.Title}">
+    
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,*" Padding="20">
+            <Button Grid.Row="0"
+                    Text="Back" 
+                    Clicked="GoToHome" 
+                    HorizontalOptions="Start" 
+                    Margin="0,0,0,20"/>
+
+            <VerticalStackLayout Grid.Row="1" Spacing="15">
+                <Label Text="{Binding Book.Title}"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                    <Label Grid.Column="0" Grid.Row="0"
+                           Text="{Binding Book.Auteur.Nom}"
+                           FontSize="18"
+                           TextColor="#495057"/>
+                    
+                    <Label Grid.Column="1" Grid.Row="0"
+                           Text="{Binding Book.AnneeEdition, StringFormat='Published in {0}'}"
+                           FontSize="16"
+                           TextColor="#6c757d"/>
+
+                    <Label Grid.Column="0" Grid.Row="1"
+                           Text="{Binding Book.Categorie.Libelle}"
+                           FontSize="16"
+                           TextColor="#495057"/>
+                           
+                    <Label Grid.Column="1" Grid.Row="1"
+                           Text="{Binding Book.NbPage, StringFormat='{0} pages'}"
+                           FontSize="16"
+                           TextColor="#6c757d"/>
+                </Grid>
+
+                <Button Text="Change Tag"
+                        Clicked="OnChangeTagClicked"
+                        HorizontalOptions="Start"
+                        Margin="0,10"/>
+
+                <Label Text="Summary"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0,10,0,0"/>
+
+                <Label Text="{Binding Book.Resume}"
+                       FontSize="16"
+                       TextColor="#212529"/>
+            </VerticalStackLayout>
+
+            <!-- Book Content -->
+            <ScrollView Grid.Row="2" Margin="0,20,0,0">
+                <Label x:Name="BookContent"
+                       FontSize="16"
+                       LineBreakMode="WordWrap"
+                       TextType="Text"/>
+            </ScrollView>
+        </Grid>
+    </ScrollView>
+</ContentPage>

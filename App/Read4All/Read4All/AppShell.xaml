@@ -8,16 +8,12 @@
     Title="Read4All">
 
     <TabBar>
-        <Tab Title="Liste Livre" Icon="home.png">
+        <Tab Title="Liste Livre">
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
         </Tab>
-        <Tab Title="Details Livre" Icon="profile.png">
+        <Tab Title="Details Livre">
             <ShellContent ContentTemplate="{DataTemplate local:BookDetails}" />
         </Tab>
-        <Tab Title="Livre" Icon="profile.png">
-            <ShellContent ContentTemplate="{DataTemplate local:LivrePage}" />
-        </Tab>
-
     </TabBar>
 
 </Shell>
